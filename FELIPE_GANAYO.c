@@ -39,15 +39,17 @@
 	    b. file processing functions such as fopen(), fclose(), etc.
 	7. Do NOT use library functions that were NOT discussed in our class.
  */
-#define Max_Char 36
+#define MAX_CHAR 36
+// #define MAX_ROWS 203
+#define MAX_TERRITORY 500 
+#define MAX_COLUMNS 16
 
-#define Max_Rows 203
-#define Max_Columns 16
+#define NUMBER_OF_CASES 3
 
 /*
     You may declare any typedef that you need below this comment.
 */
-typedef char String[Max_Char]; 
+typedef char String[MAX_CHAR];
 
 
 /*
@@ -71,81 +73,60 @@ typedef char String[Max_Char];
     may not be easy to understand to the person reading the codes. 
 */
 
-void printCountryIndex(int index, String sMaxCountries[]) {
-    int nNumOfCharacters = strlen(sMaxCountries[index]);
-    int i;
 
-    for (i = 0; i < nNumOfCharacters; i++) {
-        printf("%c", sMaxCountries[index][i]);
+int get_input(String territories[], double life_expectancy_factors[][15]) {
+    int i = 0, j = 0;
+    String temp_string;
+    double temp_double;
+
+    while (scanf("%35s", temp_string) == 1) {
+        strcpy(territories[i], temp_string);
+        for (j = 0; j < 15; j++) {
+            if (scanf("%lf", &temp_double) == 1)
+                life_expectancy_factors[i][j] = temp_double;
+        }
+        i++;
+    }
+    
+    return i;
+}
+
+
+
+int find_min(double a[], int n) {
+    int i;
+    int min = 0;
+    for (i = 0; i < n; i++) {
+        if (a[min] > a[i])
+            min = i;
     }
 
+    return min;
 }
 
-void Get_Input (String Territories[], double LifeExpectancy_Factors[][15]) {
-		
-		int i = 0, j = 0;
-		String Temp_String;
-    	double Temp_Double;
-    	
-		while (scanf(" %35s", Temp_String) == 1) {
-    		strcpy(Territories[i], Temp_String);
-				for (j = 0; j < 15; j++) {
-					if (scanf("%lf", &Temp_Double) == 1) 
-            		LifeExpectancy_Factors[i][j] = Temp_Double;
-       		 	}
-       	 	i++;
-		}
-		
-	}
-
-double FindAvg(double A[][15], int Column_Index) {
+int find_max(double a[], int n) {
     int i;
-    double sum = 0.0;
-
-    for (i = 1; i < 203; i++) {
-    //	printf("\nSAD = %lf\n", A[i][Column_Index]);
-        sum += A[i][Column_Index];
+    int max = 0;
+    for (i = 0; i < n; i++) {
+        if (a[max] < a[i])
+            max = i;
     }
-	double avg;
-    avg = sum / 202;
-	
-    return avg;
+
+    return max;
 }
 
 
-int FindMin (double A[],int n) {
-	int i;
-	int min = 0;
-	for (i = 0; i < n; i++){
-		if (A[min] > A[i])
-			min = i;
-	}
-	
-	return min;
+double find_sum(double a[], int n) {
+    int i;
+    double sum = 0;
+    for (i = 1; i < n; i++) {
+        sum += a[i];
+    }
+
+    return sum;
 }
 
-int FindMax(double A[],int n) {
-	int i;
-	int max = 0;
-	for (i = 0; i < n; i++){
-		if (A[max] < A[i])
-			max = i;
-	}
-	
-	return max;
-}
-
-double FindSum (double A[],int n) {
-	int i;
-	double sum = 0;
-	for (i = 1; i < n; i++){
-		sum += A[i];
-	}
-	
-	return sum;
-}
-
-int countAbove_Num(double arr[], int size, float condition) {
+int count_above_num(double arr[], int size, float condition) {
     int count = 0;
 
     for (int i = 0; i < size; i++) {
@@ -157,116 +138,250 @@ int countAbove_Num(double arr[], int size, float condition) {
     return count;
 }
 
-void swapElements(String arr[], double factors[], int index1, int index2) {
+void swap_elements(String arr[], double factors[], int index1, int index2) {
     String temp;
-    double tempFactor;
+    double temp_factor;
 
     strcpy(temp, arr[index1]);
     strcpy(arr[index1], arr[index2]);
     strcpy(arr[index2], temp);
 
-    tempFactor = factors[index1];
+    temp_factor = factors[index1];
     factors[index1] = factors[index2];
-    factors[index2] = tempFactor;
+    factors[index2] = temp_factor;
 }
 
-void SelectionSort(String Territories[], double LE_Factors[], int n) {
+
+
+void selection_sort(String territories[], double le_factors[], int n) {
     int i, j, min;
 
     for (i = 0; i < n - 1; i++) {
-        min = i; // min is the index of the lowest element
+        min = i;
 
         for (j = i + 1; j < n; j++)
-            if (LE_Factors[min] < LE_Factors[j])
+            if (le_factors[min] < le_factors[j])
                 min = j;
 
-        // Swap if needed
         if (i != min) {
-            swapElements(Territories, LE_Factors, i, min);
+            swap_elements(territories, le_factors, i, min);
         }
     }
 }
+/*
+int q3_binary_search(char input[], String temp_string[]) {
+    int low, high, mid;
 
-void MP_Question_1 (double A[][15], String S[]) {
-	
-	int i;
+    low = 0;
+    high = MAX_ROWS - 2;
 
-	double ArrayOfAvg [14];
-	double average;
-	
+    while (low <= high) {
+        mid = low + (high - low) / 2;
 
-		
-		for (i = 0; i < Max_Rows; i++) {
-        average = FindAvg(A, i + 1);
-        ArrayOfAvg[i] = average;
+        if (strcmp(input, temp_string[mid]) == 0) {
+            return mid; 
+        } else if (strcmp(input, temp_string[mid]) < 0) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return -1;
+}
+*/
+
+double find_avg(double a[], int n) {
+    int i;
+    double sum = 0.0;
+
+    for (i = 0; i < n; i++) {
+        sum += a[i];
+    }
+    double avg;
+    avg = (double) sum / n;
+
+    return avg;
+}
+
+
+void mp_question_1(double a[][15], String s[], int row_val, double array_of_avg[]) {
+
+    int i, j;
+
+    double temp[row_val - 1];                
+    
+    int index = 0;
+    
+    for(j = 1; j < 15; j++){
+    	for (i = 1; i < row_val; i++) {
+    	temp[i - 1] = a[i][j];
     	}
-
-	int max = FindMax (ArrayOfAvg, 14);
-	int min = FindMin (ArrayOfAvg, 14);
-	
-
-	printf("\nMAX = %lf\n", ArrayOfAvg[max]);
-
-	printf("\nMIN = %lf\n", ArrayOfAvg[min]);
-	
-	
+    	
+    	 
+    	
+   		array_of_avg[index++] = find_avg(temp, row_val - 1);;
+	}
+    
+    
 }
 
-void MP_Question_2 (double A[][15], String S[], float condition) {
-	
-	int i, j = 0;
-	double ArrayOfSum [202];
-	
-	
-	for (i = 1; i < 203; i++){
-		ArrayOfSum[j]	=	A[i][0] - FindSum(A[i],15);
-		j++;
-	}
-	
-	int n = sizeof (ArrayOfSum) / sizeof (ArrayOfSum[0]); 
-	int count = countAbove_Num(ArrayOfSum, n, condition);
+int mp_question_2(double a[][15], String s[], int condition) {
 
-	printf("\nTHERE ARE %d COUNTRIES ABOVE %.1f LIFE EXPECTANCY AFTER DEDUCTION\n", count, condition);
+    int i, j = 0;
+    double array_of_sum[202];
 
+    for (i = 1; i < 203; i++) {
+        array_of_sum[j] = a[i][0] - find_sum(a[i], 15);
+        j++;
+    }
+
+    int n = sizeof(array_of_sum) / sizeof(array_of_sum[0]);
+    
+	
+	return count_above_num(array_of_sum, n, condition);
+}
+/*
+void mp_question3(String input, String territories[], double life_expectancy_factors[][15]) {
+    int i, j, min, index, k;
+    double temp;
+    double temp_array[MAX_ROWS][14];
+    String switch_factors[14];
+    String temp_string[MAX_ROWS], switch_string;
+    
+    String factors[14] = {"Air pollution", "Ambient PM", "Ozone", "Household Air Pollution", "Environmental/Occupational Hazards", 
+                        "Occupational Hazards", "Unsafe WaSH", "Metabolic Syndrome", "Dietary", "High Fasting Plasma Sugar", "Tobacco",
+                        "Smoking", "Secondhand Smoke", "Unsafe Sex"};
+
+    // Assigns the strings of territories to temp_string 
+    // Assigns life expectancy factors to temp_array and ensures it is at its corresponding row
+    // Exclude the Base Life Expectancy when transferring values to temp_array
+    for(i = 0; i < MAX_ROWS; i++) {
+        strcpy(temp_string[i], territories[i]);
+        for(j = 0; j < 14; j++) {
+            temp_array[i][j] = life_expectancy_factors[i][j + 1];
+        }   
+    }
+
+    // Assigns factors in switch_factors to sort it with the values later
+    for(i = 0; i < 14; i++) {
+        strcpy(switch_factors[i], factors[i]);
+    }
+
+    // Selection sort for the temp_string array
+    // Assigns the values to their new spots in temp_array since temp_string has changed
+    for(i = 0; i < MAX_ROWS - 1; i++) {
+        min = i;
+        for(j = i + 1; j < MAX_ROWS; j++) {
+            if(strcmp(temp_string[min], temp_string[j]) > 0) {
+                min = j;
+            }
+        }
+
+        if (i != min) {
+            strcpy(switch_string, temp_string[i]);
+            strcpy(temp_string[i], temp_string[min]);
+            strcpy(temp_string[min], switch_string);
+
+            for(k = 0; k < 15; k++) {
+                temp = temp_array[i][k];
+                temp_array[i][k] = temp_array[min][k];
+                temp_array[min][k] = temp;
+            }
+        }
+    }
+
+    // Binary Search for temp_string to get the index where the country is located in temp_string array after sorting it
+    index = q3_binary_search(input, temp_string);
+
+    // Selection sort on the factors
+    // Assign the factor's labels to their right positions since the positions of factors will change
+    for(i = 0; i < 13; i++) {
+        min = i;
+        for(j = i + 1; j < 14; j++) {
+            if(temp_array[index][min] > temp_array[index][j]) {
+                min = j;
+            }
+        }
+
+        if(i != min) {
+            temp = temp_array[index][i];
+            temp_array[index][i] = temp_array[index][min];
+            temp_array[index][min] = temp;
+
+            strcpy(switch_string, switch_factors[i]);
+            strcpy(switch_factors[i], switch_factors[min]);
+            strcpy(switch_factors[min], switch_string);
+        }
+    }
+
+    // Prints the factors and their values from highest to lowest
+    printf("Ranked Highest to Lowest\n\n");
+    for(i = 13, j = 1; i >= 0; i--, j++) {
+        printf("%2d. %lf - %s\n", j, temp_array[index][i], switch_factors[i]);
+    }
 }
 
 
-	
-	
-void MP_Question_5 (double A[][15], String S[]) {
-	
-	int i;
-	double Baseline_LifeExpectancy[202];
-	String Copy_Array[202];
-	
-	for(i = 0; i < 202; i++ ){
-		Baseline_LifeExpectancy[i] = A[i+1][0];
-		strcpy(Copy_Array[i],S[i+1]);
-	}
-	
-	SelectionSort(Copy_Array, Baseline_LifeExpectancy, 202);
-	
-	for(i = 0; i < 10; i++ ){
-		printCountryIndex(i, Copy_Array);
-		printf("\t%.8lf\n", Baseline_LifeExpectancy[i]);
-	}
-	
+void mp_question4(String input, String territories[], double life_expectancy_factors[][15]) {
+    int i, index;
+    double life_expectancy;
 
+    // Uses Linear Search to find the index of the row where the input is located in the territories and life_expectancy_factors array
+    printf("Territory: %s\n", input);
+    for(i = 0; i < MAX_ROWS; i++) {
+        if(strcmp(input, territories[i]) == 0) {
+            printf("Base Life Expectancy: %lf\n\n", life_expectancy_factors[i][0]);
+            life_expectancy = life_expectancy_factors[i][0];
+            index = i;
+            break;
+        }
+    }
+
+    // For loop that continuously subtracts the value of the base life expectancy with the factors of change in life expectancy
+    for(i = 1; i <= 14; i++) {
+        life_expectancy -= life_expectancy_factors[index][i];
+    }
+
+    printf("(After subtracting it with all the factors)\n");
+    printf("Life Expectancy: %lf\n", life_expectancy);
 }
+*/
+int mp_question_5(double a[][15], String s[], int condition, double baseline_life_expectancy[], String copy_array[], int rows) {
+
+    int i;
+    
+	
+    for (i = 0; i < rows; i++) {
+        baseline_life_expectancy[i] = a[i][0];
+        strcpy(copy_array[i], s[i]);
+    }
+
+    selection_sort(copy_array, baseline_life_expectancy, rows);
+
+	if(condition > 0 && condition <= rows)
+	return condition;
+	else
+	return 0;
+}
+
 int
 main()
 {
     /* Declare your own local variables. Describe the purpose of your local variables. */
     
-    String Territories[Max_Rows]; 
-    double LifeExpectancy_Factors[Max_Rows][15]; 
+    String territories[MAX_TERRITORY];
+    double life_expectancy_factors[MAX_TERRITORY][15];
+
+    int MAX_ROW = get_input(territories, life_expectancy_factors); // YO CHRIS CHANGE MO YUNG MAX_ROW TO BETTER NAME ? // //////////////////////////////////////////////////////////////////
     
-    
-	Get_Input (Territories, LifeExpectancy_Factors);
-    
-    
-   	float condition = 70;
-    
+    printf("NUMBER OF ROWS IS: %d\n", MAX_ROW);
+    int i;
+  
+    int q2_input[NUMBER_OF_CASES] = {70, 65, 80};
+//	String q3_input[NUMBER_OF_CASES] = {"Philippines", "China", "Mars"};
+//	String q4_input[NUMBER_OF_CASES] = {"Philippines", "China", "Mars"};
+	int q5_input[NUMBER_OF_CASES] = {5, 500, 3};
     /* 
        Call the function that answers a question. Thereafter, use printf() to print the question 
        and the corresponding answer.  For example:
@@ -283,10 +398,56 @@ main()
        (linear or binary search), there should be a test case, i.e., a  function 
        call with a search key parameter that does not exist, i.e., NOT FOUND scenario.
     */
+   	
+   	 String factor_names[14] = {"Air pollution", "Ambient PM", "Ozone", "Household Air Pollution", "Environmental/Occupational Hazards", "Occupational Hazards", "Unsafe WaH", "Metabolic Syndrome", "Dietary", "High Fasting Plasma Sugar", "Tobacco","Smoking", "Secondhand Smoke", "Unsafe Sex"};
+                            
+     
+      	
+	  
+	double array_of_avg[14];
+	
+   	mp_question_1(life_expectancy_factors, territories, MAX_ROW, array_of_avg);
+    int max = find_max(array_of_avg, 14);
+    int min = find_min(array_of_avg, 14);  
+    
+    printf("\nHighest Average  = %s \t-\t%lf\n", factor_names[max], array_of_avg[max]);
+    printf("\nLowest Average   = %s \t-\t%lf\n", factor_names[min], array_of_avg[min]);
+    
+   
+    
+    
+	for(i = 0; i < NUMBER_OF_CASES; i++){
+		 int count = mp_question_2(life_expectancy_factors, territories, q2_input[i]);
+		 printf("\nThe number of territories above %d baseline life expectancy after deduction is: %d territories\n", q2_input[i], count);
+	}
+	
+    for(i = 0; i < NUMBER_OF_CASES; i++){
+	//	 mp_question3(q3_input[i], territories, life_expectancy_factors);
+	}
+    
 
-	MP_Question_1 (LifeExpectancy_Factors, Territories);
-	MP_Question_2 (LifeExpectancy_Factors, Territories, condition);
-	MP_Question_5 (LifeExpectancy_Factors, Territories);
+    
+    for(i = 0; i < NUMBER_OF_CASES; i++){
+		// mp_question4(q4_input[i], territories, life_expectancy_factors);
+	}
+    
+	double baseline_life_expectancy[MAX_ROW];
+	String copy_array[MAX_ROW];
+	
+	int j;
+	for(i = 0; i < NUMBER_OF_CASES; i++){
+		
+	int output = mp_question_5(life_expectancy_factors, territories, q5_input[i], baseline_life_expectancy, copy_array, MAX_ROW);
+		if(output){
+			for (j = 0; j < output; j++) {
+    		printf("%d. ", j+1);
+        	printf("%s\t\t %lf\n", copy_array[j], baseline_life_expectancy[j]);
+    		}
+		}
+		else
+		printf("INVALID INPUT\n");
+	}
+    
 	
 
 	return 0;
