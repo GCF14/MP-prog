@@ -40,7 +40,6 @@
 	7. Do NOT use library functions that were NOT discussed in our class.
  */
 #define MAX_CHAR 36
-// #define MAX_ROWS 203
 #define MAX_TERRITORY 500 
 #define MAX_COLUMNS 16
 
@@ -79,32 +78,33 @@ int get_input(String territories[], double life_expectancy_factors[][15]) {
     String temp_string;
     double temp_double;
 
-    while (scanf("%35s", temp_string) == 1) {
+    while (scanf("%s", temp_string) == 1) { // loop which gets territory names and stores them into a 1D String array
         strcpy(territories[i], temp_string);
-        for (j = 0; j < 15; j++) {
-            if (scanf("%lf", &temp_double) == 1)
+        for (j = 0; j < 15; j++) {				// gets the base life expectancy and life expectancy factors of a given territory and stores them into a 2D double array
+            if (scanf("%lf", &temp_double) == 1)	
                 life_expectancy_factors[i][j] = temp_double;
         }
         i++;
     }
     
-    return i;
+    return i;  // returns the number of rows read by the program
 }
 
 
-
-int find_min(double a[], int n) {
+// Function which finds the index where the lowest double value is stored in an array
+int find_min(double a[], int n) {		
     int i;
-    int min = 0;
-    for (i = 0; i < n; i++) {
+    int min = 0;					
+    for (i = 0; i < n; i++) {	
         if (a[min] > a[i])
             min = i;
     }
-
-    return min;
+    return min;	// returns the index where the lowest number is found
 }
 
-int find_max(double a[], int n) {
+
+// Function which finds the index where the highest double value is stored in an array
+int find_max(double a[], int n) {	
     int i;
     int max = 0;
     for (i = 0; i < n; i++) {
@@ -112,21 +112,36 @@ int find_max(double a[], int n) {
             max = i;
     }
 
-    return max;
+    return max; // returns the index where the highest number is fouund
 }
 
-
-double find_sum(double a[], int n) {
+// Function which finds the the sum of all numbers of an array of doubles 
+double find_sum(double a[], int n) { 
     int i;
     double sum = 0;
-    for (i = 1; i < n; i++) {
+    for (i = 1; i < n; i++) { // starts at 1 since it does not count the base life expectancy
         sum += a[i];
     }
 
     return sum;
 }
 
-int count_above_num(double arr[], int size, float condition) {
+// Function which finds the the average of all numbers of an array of doubles
+double find_avg(double a[], int n) {
+    int i;
+    double sum = 0.0;
+
+    for (i = 0; i < n; i++) {
+        sum += a[i];
+    }
+    double avg;
+    avg = (double) sum / n;
+
+    return avg;
+}
+
+// Function to count numbers in an array higher than a given condition
+int count_above_num(double arr[], int size, float condition) { 
     int count = 0;
 
     for (int i = 0; i < size; i++) {
@@ -138,6 +153,7 @@ int count_above_num(double arr[], int size, float condition) {
     return count;
 }
 
+// Function to swap the String and double values of a given index
 void swap_elements(String arr[], double factors[], int index1, int index2) {
     String temp;
     double temp_factor;
@@ -152,7 +168,7 @@ void swap_elements(String arr[], double factors[], int index1, int index2) {
 }
 
 
-
+// Function to sort the list of terriories from A-Z
 void selection_sort(String territories[], double le_factors[], int n) {
     int i, j, min;
 
@@ -168,6 +184,9 @@ void selection_sort(String territories[], double le_factors[], int n) {
         }
     }
 }
+
+
+
 /*
 int q3_binary_search(char input[], String temp_string[]) {
     int low, high, mid;
@@ -191,56 +210,52 @@ int q3_binary_search(char input[], String temp_string[]) {
 }
 */
 
-double find_avg(double a[], int n) {
-    int i;
-    double sum = 0.0;
-
-    for (i = 0; i < n; i++) {
-        sum += a[i];
-    }
-    double avg;
-    avg = (double) sum / n;
-
-    return avg;
-}
 
 
 void mp_question_1(double a[][15], String s[], int row_val, double array_of_avg[]) {
 
     int i, j;
-
-    double temp[row_val - 1];                
+    double temp[row_val - 1];  // row_val - 1 because the global variable is not included  
+	   
+    int index = 0;  // for array_of_avg
     
-    int index = 0;
-    
-    for(j = 1; j < 15; j++){
-    	for (i = 1; i < row_val; i++) {
-    	temp[i - 1] = a[i][j];
+    // column major loop where in each column (excluding the 1st row and column) 
+    for(j = 1; j < 15; j++){	// loop starts at 1 because the 1st column because it is the column for base life expectancy
+    	for (i = 1; i < row_val; i++) { // loop start at 1 because the 1st row are from the Global territory which is not included 
+    	temp[i - 1] = a[i][j]; 
     	}
     	
     	 
     	
-   		array_of_avg[index++] = find_avg(temp, row_val - 1);;
+   		array_of_avg[index++] = find_avg(temp, row_val - 1); // updates the array with average values
 	}
     
     
 }
 
-int mp_question_2(double a[][15], String s[], int condition) {
+int mp_question_2(double a[][15], String s[], int n, int param_number) {
 
     int i, j = 0;
-    double array_of_sum[202];
+    double array_of_sum[n - 1]; // does not include values from the 1st Row (Global)
+	
+	
+	if(param_number > 0){		// checks if the input if it is above 0 since life expectancy can never be 0 or a negative value
+		
+		for (i = 1; i < n; i++) { // excludes the Global variables
+       		array_of_sum[j] = a[i][0] - find_sum(a[i], 15); // passes each row of the 2D array
+        	j++;
+  		  }
 
-    for (i = 1; i < 203; i++) {
-        array_of_sum[j] = a[i][0] - find_sum(a[i], 15);
-        j++;
-    }
-
-    int n = sizeof(array_of_sum) / sizeof(array_of_sum[0]);
+    //	int n = sizeof(array_of_sum) / sizeof(array_of_sum[0]);
     
 	
-	return count_above_num(array_of_sum, n, condition);
+		return count_above_num(array_of_sum, n - 1, param_number);
+	}
+    
+    else 
+	return -1; // the count above can return 0 so the else returns -1
 }
+
 /*
 void mp_question3(String input, String territories[], double life_expectancy_factors[][15]) {
     int i, j, min, index, k;
@@ -250,7 +265,7 @@ void mp_question3(String input, String territories[], double life_expectancy_fac
     String temp_string[MAX_ROWS], switch_string;
     
     String factors[14] = {"Air pollution", "Ambient PM", "Ozone", "Household Air Pollution", "Environmental/Occupational Hazards", 
-                        "Occupational Hazards", "Unsafe WaSH", "Metabolic Syndrome", "Dietary", "High Fasting Plasma Sugar", "Tobacco",
+                        "Occupational Hazards", "Unsafe Wash", "Metabolic Syndrome", "Dietary", "High Fasting Plasma Sugar", "Tobacco",
                         "Smoking", "Secondhand Smoke", "Unsafe Sex"};
 
     // Assigns the strings of territories to temp_string 
@@ -347,20 +362,20 @@ void mp_question4(String input, String territories[], double life_expectancy_fac
     printf("Life Expectancy: %lf\n", life_expectancy);
 }
 */
-int mp_question_5(double a[][15], String s[], int condition, double baseline_life_expectancy[], String copy_array[], int rows) {
+int mp_question_5(double a[][15], String s[], int param_number, double baseline_life_expectancy[], String copy_array[], int rows) {
 
     int i;
     
 	
     for (i = 0; i < rows; i++) {
-        baseline_life_expectancy[i] = a[i][0];
-        strcpy(copy_array[i], s[i]);
+        baseline_life_expectancy[i] = a[i][0]; // transfers the base life expectancy from a the 2D array of values to 1D
+        strcpy(copy_array[i], s[i]); // makes a copy array of the territory namees
     }
 
-    selection_sort(copy_array, baseline_life_expectancy, rows);
+    selection_sort(copy_array, baseline_life_expectancy, rows); // calls the selection sort function to sort the array from A-Z 
 
-	if(condition > 0 && condition <= rows)
-	return condition;
+	if(param_number > 0 && param_number <= rows) //checks if the param_number is above 0 and less than the total number of territories
+	return param_number;
 	else
 	return 0;
 }
@@ -370,18 +385,25 @@ main()
 {
     /* Declare your own local variables. Describe the purpose of your local variables. */
     
-    String territories[MAX_TERRITORY];
-    double life_expectancy_factors[MAX_TERRITORY][15];
+    String territories[MAX_TERRITORY];	// where the territory names are stored
+    double life_expectancy_factors[MAX_TERRITORY][15]; // where the base life expectancy and life expectancy factors are stored
 
-    int MAX_ROW = get_input(territories, life_expectancy_factors); // YO CHRIS CHANGE MO YUNG MAX_ROW TO BETTER NAME ? // //////////////////////////////////////////////////////////////////
+    int MAX_ROW = get_input(territories, life_expectancy_factors); // gets the total number of 
     
-    printf("NUMBER OF ROWS IS: %d\n", MAX_ROW);
-    int i;
-  
-    int q2_input[NUMBER_OF_CASES] = {70, 65, 80};
+    int i, j; // it is for for-loop loops
+    
+  	int question_num = 1; 
+  	
+  	
+  	// For questions that need temporary arrays 
+  	double array_of_avg[14];	// Q1
+  	double baseline_life_expectancy[MAX_ROW];	// Q5
+	String copy_array[MAX_ROW];	// Q5
+  	
+    int q2_input[NUMBER_OF_CASES] = {70, -1, 80};
 //	String q3_input[NUMBER_OF_CASES] = {"Philippines", "China", "Mars"};
 //	String q4_input[NUMBER_OF_CASES] = {"Philippines", "China", "Mars"};
-	int q5_input[NUMBER_OF_CASES] = {5, 500, 3};
+	int q5_input[NUMBER_OF_CASES] = {5, 500, 203};
     /* 
        Call the function that answers a question. Thereafter, use printf() to print the question 
        and the corresponding answer.  For example:
@@ -399,14 +421,17 @@ main()
        call with a search key parameter that does not exist, i.e., NOT FOUND scenario.
     */
    	
-   	 String factor_names[14] = {"Air pollution", "Ambient PM", "Ozone", "Household Air Pollution", "Environmental/Occupational Hazards", "Occupational Hazards", "Unsafe WaH", "Metabolic Syndrome", "Dietary", "High Fasting Plasma Sugar", "Tobacco","Smoking", "Secondhand Smoke", "Unsafe Sex"};
+   	 String factor_names[14] = {"Air pollution", "Ambient PM", "Ozone", "Household Air Pollution",
+		 "Environmental/Occupational Hazards", "Occupational Hazards", "Unsafe WaH", "Metabolic Syndrome", 
+		 "Dietary", "High Fasting Plasma Sugar", "Tobacco","Smoking", "Secondhand Smoke", "Unsafe Sex"};
                             
      
-      	
-	  
-	double array_of_avg[14];
+    printf("\n===================================QUESTION %d===================================\n", question_num);
+    printf("Q1: After averaging each LE factor (excluding values from Global), which LE factor has the highest and lowest average?\n");
+	printf("A%d: \n",question_num++);
 	
-   	mp_question_1(life_expectancy_factors, territories, MAX_ROW, array_of_avg);
+   	mp_question_1(life_expectancy_factors, territories, MAX_ROW, array_of_avg);	// updates the array_of_avg array
+   	// finds the min and max
     int max = find_max(array_of_avg, 14);
     int min = find_min(array_of_avg, 14);  
     
@@ -415,28 +440,42 @@ main()
     
    
     
-    
+    printf("\n===================================QUESTION %d===================================\n", question_num);
+    printf("Q2: How many territories would still have above <parameter_number> baseline life expectancy after deducting the impact of all changes in life expectancy factors?\n");
+	printf("A%d: \n",question_num++);
+
 	for(i = 0; i < NUMBER_OF_CASES; i++){
-		 int count = mp_question_2(life_expectancy_factors, territories, q2_input[i]);
+		 printf("\tTESTCASE %d \n", i+1);
+		 int count = mp_question_2(life_expectancy_factors, territories, MAX_ROW, q2_input[i]);
+		 if(count >= 0)
 		 printf("\nThe number of territories above %d baseline life expectancy after deduction is: %d territories\n", q2_input[i], count);
+		 else
+		 printf("INVALID INPUT\n");
+		 
 	}
 	
+	printf("\n===================================QUESTION %d===================================\n", question_num);
+	printf("Q3: What is the ranking of change in life expectancy factors of <name_of_territory> from highest to lowest?\n");
+	printf("A%d: \n",question_num++);
     for(i = 0; i < NUMBER_OF_CASES; i++){
 	//	 mp_question3(q3_input[i], territories, life_expectancy_factors);
 	}
     
-
-    
+	printf("\n===================================QUESTION %d===================================\n", question_num);
+	printf("Q4:  What is the life expectancy of <parameter_territory_name> before and after subtracting it with all the change in life expectancy factors?\n");
+	printf("A%d: \n",question_num++);
     for(i = 0; i < NUMBER_OF_CASES; i++){
 		// mp_question4(q4_input[i], territories, life_expectancy_factors);
 	}
     
-	double baseline_life_expectancy[MAX_ROW];
-	String copy_array[MAX_ROW];
 	
-	int j;
+	
+
+	printf("\n===================================QUESTION %d===================================\n", question_num);
+	printf("Q5: Which are the top <parameter_number> with the highest baseline life expectancy? List them from highest to lowest.\n");
+	printf("A%d: \n",question_num++);
 	for(i = 0; i < NUMBER_OF_CASES; i++){
-		
+		printf("\tTESTCASE %d \n", i+1);
 	int output = mp_question_5(life_expectancy_factors, territories, q5_input[i], baseline_life_expectancy, copy_array, MAX_ROW);
 		if(output){
 			for (j = 0; j < output; j++) {
