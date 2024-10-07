@@ -1,0 +1,111 @@
+
+===================================QUESTION 1===================================
+Q1: After averaging each LE factor (excluding values from Global), which LE factor has the highest and lowest average?
+A1: 
+
+Highest Average = Metabolic Syndrome 	-	5.776715
+
+Lowest Average = Ozone 	-	0.023670
+
+===================================QUESTION 2===================================
+Q2: How many territories would still have above <parameter_number> baseline life expectancy after deducting the impact of all changes in life expectancy factors?
+A2: 
+	TESTCASE 1 
+
+The number of territories above 70 baseline life expectancy after deduction is: 20 territories
+	TESTCASE 2 
+*Invalid* Try Again
+	TESTCASE 3 
+
+The number of territories above 80 baseline life expectancy after deduction is: 0 territories
+
+===================================QUESTION 3===================================
+Q3: What is the ranking of change in life expectancy factors of <name_of_territory> from highest to lowest?
+A3: 
+	TESTCASE 1 
+
+Country: Philippines
+Ranked Highest to Lowest
+
+ 1. 6.165008 - Metabolic Syndrome
+ 2. 2.575556 - Tobacco
+ 3. 2.383616 - Environmental/Occupational Hazards
+ 4. 2.162167 - Dietary
+ 5. 2.159935 - Smoking
+ 6. 1.885343 - High Fasting Plasma Sugar
+ 7. 1.675681 - Air pollution
+ 8. 0.929484 - Household Air Pollution
+ 9. 0.691634 - Ambient PM
+10. 0.460448 - Secondhand Smoke
+11. 0.242926 - Unsafe WaSH
+12. 0.224457 - Occupational Hazards
+13. 0.164648 - Unsafe Sex
+14. 0.002370 - Ozone
+	TESTCASE 2 
+
+Country: China
+Ranked Highest to Lowest
+
+ 1. 4.716210 - Metabolic Syndrome
+ 2. 2.861276 - Environmental/Occupational Hazards
+ 3. 2.777920 - Tobacco
+ 4. 2.437863 - Smoking
+ 5. 2.028728 - Dietary
+ 6. 1.850731 - Air pollution
+ 7. 1.393518 - Ambient PM
+ 8. 0.987177 - High Fasting Plasma Sugar
+ 9. 0.386617 - Secondhand Smoke
+10. 0.352632 - Occupational Hazards
+11. 0.340365 - Household Air Pollution
+12. 0.090016 - Unsafe Sex
+13. 0.074187 - Ozone
+14. 0.017428 - Unsafe WaSH
+	TESTCASE 3 
+
+*Invalid* Try Again
+
+===================================QUESTION 4===================================
+Q4: What is the life expectancy of <parameter_territory_name> before and after subtracting it with all the change in life expectancy factors?
+A4: 
+	TESTCASE 1 
+
+Territory: China
+Base Life Expectancy: 77.582175
+
+(After subtracting it with all the factors)
+Life Expectancy: 57.267508
+	TESTCASE 2 
+
+Territory: Philippines
+Base Life Expectancy: 71.798423
+
+(After subtracting it with all the factors)
+Life Expectancy: 50.075149
+	TESTCASE 3 
+
+Territory: Mars
+
+*Invalid* Try Again
+
+===================================QUESTION 5===================================
+Q5: Which are the top <parameter_number> with the highest baseline life expectancy? List them from highest to lowest.
+A5: 
+	TESTCASE 1 
+1. Singapore		 84.565300
+2. Japan		 84.557851
+3. Iceland		 83.891722
+4. Switzerland		 83.863622
+5. Italy		 83.032133
+	TESTCASE 2 
+*Invalid* Try Again
+	TESTCASE 3 
+1. Singapore		 84.565300
+2. Japan		 84.557851
+3. Iceland		 83.891722
+4. Switzerland		 83.863622
+5. Italy		 83.032133
+6. Spain		 83.012277
+7. Israel		 82.902047
+8. Norway		 82.829180
+9. South_Korea		 82.826250
+10. Luxembourg		 82.798953

@@ -1,0 +1,58 @@
+
+===================================QUESTION 1===================================
+Q1: Which territory has the highest change in life expectancy due to smoking that is not greater than <parameter_number> years?
+A1: 
+	TESTCASE 1 
+Belarus	2.452218
+	TESTCASE 2 
+INVALID INPUT
+	TESTCASE 3 
+Lebanon	2.995377
+
+===================================QUESTION 2===================================
+Q2: What is the sum of the loss of life expectancy due to metabolic syndrome, dietary factors, and fasting plasma sugar for <parameter_territory_name>?
+A2: 
+	TESTCASE 1 
+The sum of metabolic syndrome, dietary factors, and fasting plasma sugar for Singapore is: 5.495778
+
+	TESTCASE 2 
+INVALID INPUT
+	TESTCASE 3 
+The sum of metabolic syndrome, dietary factors, and fasting plasma sugar for Philippines is: 10.212519
+
+
+===================================QUESTION 3===================================
+Q3: Does <parameter_territory_name> have a negligible change in life expectancy due to ozone (less than 0.01)?
+A3: 
+	TESTCASE 1 
+YES
+
+	TESTCASE 2 
+INVALID INPUT
+
+	TESTCASE 3 
+NO
+
+
+===================================QUESTION 4===================================
+Q4: What is the average change in life expectancy due to air pollution for the top <parameter_number> territories with the highest baseline life expectancy?
+A4: 
+	TESTCASE 1 
+Average is: 0.316243
+1. Singapore
+2. Japan
+3. Iceland
+4. Switzerland
+5. Italy
+	TESTCASE 2 
+INVALID INPUT
+	TESTCASE 3 
+Average is: 0.317137
+1. Singapore
+2. Japan
+3. Iceland
+
+===================================QUESTION 5===================================
+Q5: What is the minimum change in life expectancy due to environmental/occupational hazards that is greater than 3 percent of the respective territories' baseline life expectancy?
+A5: 
+South_Africa	2.175128
